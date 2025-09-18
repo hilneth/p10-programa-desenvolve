@@ -5,11 +5,11 @@ import { CardLivro } from "./CardLivro"
 import type { Book } from "@/types/book"
 import { Search, Filter } from "lucide-react" // ícones bonitos do shadcn/lucide
 
-interface BookListProps {
+interface ListaDeLivrosProps {
   books: Book[]
 }
 
-export function BookList({ books }: BookListProps) {
+export function ListaDeLivrosProps({ books }: ListaDeLivrosProps) {
   const [search, setSearch] = useState("")
   const [genreFilter, setGenreFilter] = useState("")
 
