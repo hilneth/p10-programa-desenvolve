@@ -7,13 +7,13 @@ import Star from "../../public/images/Star.svg"
 export default function Dashboard() {
   return (
     <main className="flex">
-      <div className="bg-white w-[508px] h-[544px] mt-[34px] mb-[148px] ml-[166px] mr-[167px] rounded-[30px] p-5">
+      <div className="bg-white w-[508px] h-[544px] mt-[34px] ml-[166px] mr-[167px] rounded-[30px] p-5">
         <h3 className="text-black"><strong>Dashboard</strong></h3>
         <CustomPieChart />
         <h3 className="text-black"><strong>Livro recente</strong></h3>
         <BookCard />
       </div>
-      <div className="flex flex-col gap-3 w-[430px] h-[544px] mt-[34px] mb-[148px] rounded-[30px]">
+      <div className="flex flex-col gap-3 w-[430px] h-[544px] mt-[34px] rounded-[30px]">
         <div className="w-[430px] flex gap-3">
           <button className="bg-white text-black justify-self-start w-[50px] h-[50px] rounded-[30px]">
             Icon
