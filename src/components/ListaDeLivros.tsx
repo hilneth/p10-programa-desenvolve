@@ -8,18 +8,25 @@ import { Search, Filter } from "lucide-react" // ícones bonitos do shadcn/lucid
 interface ListaDeLivrosProps {
   books: Book[]
 }
-
-export function ListaDeLivrosProps({ books }: ListaDeLivrosProps) {
+  // Componente principal que renderiza a lista de livros
+export function ListaDeLivros({ books }: ListaDeLivrosProps) {
+  // Estado para armazenar o texto digitado na busca
   const [search, setSearch] = useState("")
+  // Estado para armazenar o gênero selecionado no filtro
   const [genreFilter, setGenreFilter] = useState("")
 
-  // Criar lista dinâmica de gêneros a partir dos livros
+  // useMemo para gerar automaticamente a lista de gêneros disponíveis
+  // percorre os livros e cria uma lista sem repetições
   const genres = useMemo(() => {
     const uniqueGenres = Array.from(new Set(books.map((b) => b.genre).filter(Boolean)))
     return uniqueGenres.sort()
   }, [books])
 
-  // Filtrar livros
+  
+  // Lógica de filtragem:
+  // 1. matchSearch → verifica se o título ou autor contém o texto buscado
+  // 2. matchGenre → verifica se o livro pertence ao gênero selecionado
+  // 3. Retorna apenas os livros que satisfazem ambos os critérios
   const filteredBooks = books.filter((book) => {
     const matchSearch =
       book.title.toLowerCase().includes(search.toLowerCase()) ||
