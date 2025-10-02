@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./books.db"
+}
+
+model Book {
+  // Required Fields
+  id     String @id @default(uuid()) // Unique identifier (UUID is a good default for strings)
+  title  String // book title (required)
+  author String // book author (required)
+
+  // Optional Fields
+  genre    String? // literary genre
+  year     Int? // year of publication
+  pages    Int? // total pages
+  rating   Int?    @default(0) // 1-5 star rating (defaulting to 0 if not rated)
+  synopsis String? // synopsis/description (using @db.Text for potentially long strings)
+  cover    String? // cover URL
+}
