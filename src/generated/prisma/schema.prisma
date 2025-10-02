@@ -14,11 +14,23 @@ datasource db {
   url      = "file:./books.db"
 }
 
+enum Status {
+  QUERO_LER
+  LENDO
+  LIDO
+  PAUSADO
+  ABANDONADO
+}
+
 model Book {
   // Required Fields
-  id     String @id @default(uuid()) // Unique identifier (UUID is a good default for strings)
-  title  String // book title (required)
-  author String // book author (required)
+  id          String   @id @default(uuid()) // Unique identifier (UUID is a good default for strings)
+  title       String // book title (required)
+  author      String // book author (required)
+  status      Status   @default(QUERO_LER) // status (required)
+  currentpage Int      @default(0) // current page (required)
+  createdat   DateTime @default(now()) // created at (required)
+  updatedat   DateTime @updatedAt // created at (required)
 
   // Optional Fields
   genre    String? // literary genre
@@ -27,4 +39,5 @@ model Book {
   rating   Int?    @default(0) // 1-5 star rating (defaulting to 0 if not rated)
   synopsis String? // synopsis/description (using @db.Text for potentially long strings)
   cover    String? // cover URL
+  isbn     String? // ISBN
 }
