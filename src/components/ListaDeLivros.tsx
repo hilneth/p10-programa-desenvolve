@@ -1,40 +1,38 @@
- ; "use client"
+("use client");
 
-import { useState, useMemo } from "react"
-import { CardLivro } from "./CardLivro"
-import type { Book } from "@/types/book"
-import { Search, Filter } from "lucide-react" // ícones bonitos do shadcn/lucide
+import { useState, useMemo } from "react";
+import { CardLivro } from "./CardLivro";
+import type { Book } from "../types/TLivro";
+import { Search, Filter } from "lucide-react";
 
 interface ListaDeLivrosProps {
-  books: Book[]
+  books: Book[];
 }
 
 export function ListaDeLivrosProps({ books }: ListaDeLivrosProps) {
-  const [search, setSearch] = useState("")
-  const [genreFilter, setGenreFilter] = useState("")
+  const [search, setSearch] = useState("");
+  const [genreFilter, setGenreFilter] = useState("");
 
-  // Criar lista dinâmica de gêneros a partir dos livros
   const genres = useMemo(() => {
-    const uniqueGenres = Array.from(new Set(books.map((b) => b.genre).filter(Boolean)))
-    return uniqueGenres.sort()
-  }, [books])
+    const uniqueGenres = Array.from(
+      new Set(books.map((b) => b.genre).filter(Boolean))
+    );
+    return uniqueGenres.sort();
+  }, [books]);
 
-  // Filtrar livros
   const filteredBooks = books.filter((book) => {
     const matchSearch =
       book.title.toLowerCase().includes(search.toLowerCase()) ||
-      book.author.toLowerCase().includes(search.toLowerCase())
+      book.author.toLowerCase().includes(search.toLowerCase());
 
-    const matchGenre = genreFilter ? book.genre === genreFilter : true
+    const matchGenre = genreFilter ? book.genre === genreFilter : true;
 
-    return matchSearch && matchGenre
-  })
+    return matchSearch && matchGenre;
+  });
 
   return (
     <div className="space-y-6">
-      {/* Barra de busca + filtro */}
       <div className="flex items-center gap-3 bg-white p-3 rounded-xl shadow-sm border w-full">
-        {/* Filtro por gênero */}
         <div className="flex items-center gap-2">
           <Filter className="w-5 h-5 text-gray-500" />
           <select
@@ -75,5 +73,5 @@ export function ListaDeLivrosProps({ books }: ListaDeLivrosProps) {
         </div>
       )}
     </div>
-  )
+  );
 }
