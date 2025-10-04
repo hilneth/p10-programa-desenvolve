@@ -125,6 +125,7 @@ exports.Prisma.BookScalarFieldEnum = {
   currentpage: 'currentpage',
   createdat: 'createdat',
   updatedat: 'updatedat',
+  categoryid: 'categoryid',
   genre: 'genre',
   year: 'year',
   pages: 'pages',
@@ -132,6 +133,13 @@ exports.Prisma.BookScalarFieldEnum = {
   synopsis: 'synopsis',
   cover: 'cover',
   isbn: 'isbn'
+};
+
+exports.Prisma.CategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdat: 'createdat',
+  updatedat: 'updatedat'
 };
 
 exports.Prisma.SortOrder = {
@@ -152,7 +160,8 @@ exports.Status = exports.$Enums.Status = {
 };
 
 exports.Prisma.ModelName = {
-  Book: 'Book'
+  Book: 'Book',
+  Category: 'Category'
 };
 
 /**

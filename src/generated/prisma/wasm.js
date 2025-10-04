@@ -97,6 +97,7 @@ exports.Prisma.BookScalarFieldEnum = {
   currentpage: 'currentpage',
   createdat: 'createdat',
   updatedat: 'updatedat',
+  categoryid: 'categoryid',
   genre: 'genre',
   year: 'year',
   pages: 'pages',
@@ -104,6 +105,13 @@ exports.Prisma.BookScalarFieldEnum = {
   synopsis: 'synopsis',
   cover: 'cover',
   isbn: 'isbn'
+};
+
+exports.Prisma.CategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdat: 'createdat',
+  updatedat: 'updatedat'
 };
 
 exports.Prisma.SortOrder = {
@@ -124,7 +132,8 @@ exports.Status = exports.$Enums.Status = {
 };
 
 exports.Prisma.ModelName = {
-  Book: 'Book'
+  Book: 'Book',
+  Category: 'Category'
 };
 /**
  * Create the Client
@@ -165,7 +174,6 @@ const config = {
     "db"
   ],
   "activeProvider": "sqlite",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -174,13 +182,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:./books.db\"\n}\n\nenum Status {\n  QUERO_LER\n  LENDO\n  LIDO\n  PAUSADO\n  ABANDONADO\n}\n\nmodel Book {\n  // Required Fields\n  id          String   @id @default(uuid()) // Unique identifier (UUID is a good default for strings)\n  title       String // book title (required)\n  author      String // book author (required)\n  status      Status   @default(QUERO_LER) // status (required)\n  currentpage Int      @default(0) // current page (required)\n  createdat   DateTime @default(now()) // created at (required)\n  updatedat   DateTime @updatedAt // created at (required)\n\n  // Optional Fields\n  genre    String? // literary genre\n  year     Int? // year of publication\n  pages    Int? // total pages\n  rating   Int?    @default(0) // 1-5 star rating (defaulting to 0 if not rated)\n  synopsis String? // synopsis/description (using @db.Text for potentially long strings)\n  cover    String? // cover URL\n  isbn     String? // ISBN\n}\n",
-  "inlineSchemaHash": "4633bdab47600f0fb94ba75382cd276d604239cde5aa0b50b90e0bc0c669b1c2",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:./books.db\"\n}\n\nenum Status {\n  QUERO_LER\n  LENDO\n  LIDO\n  PAUSADO\n  ABANDONADO\n}\n\nmodel Book {\n  // Required Fields\n  id          String   @id @default(uuid()) // Unique identifier (UUID is a good default for strings)\n  title       String // book title (required)\n  author      String // book author (required)\n  status      Status   @default(QUERO_LER) // status (required)\n  currentpage Int      @default(0) // current page (required)\n  createdat   DateTime @default(now()) // created at (required)\n  updatedat   DateTime @updatedAt // created at (required)\n\n  // Optional Fields\n  categoryid Int?\n  category   Category? @relation(fields: [categoryid], references: [id])\n  genre      String? // literary genre\n  year       Int? // year of publication\n  pages      Int? // total pages\n  rating     Int?      @default(0) // 1-5 star rating (defaulting to 0 if not rated)\n  synopsis   String? // synopsis/description (using @db.Text for potentially long strings)\n  cover      String? // cover URL\n  isbn       String? // ISBN\n}\n\nmodel Category {\n  id        Int      @id @default(autoincrement())\n  name      String   @unique\n  createdat DateTime @default(now())\n  updatedat DateTime @updatedAt\n  books     Book[]\n}\n",
+  "inlineSchemaHash": "16b27f760b257167e5c2911fe42735c7016f20ff2ce8ffe0d56418a066fe76e2",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Book\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"author\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"Status\"},{\"name\":\"currentpage\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdat\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedat\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"genre\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"year\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"pages\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"rating\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"synopsis\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"cover\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isbn\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Book\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"author\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"Status\"},{\"name\":\"currentpage\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"createdat\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedat\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"categoryid\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"category\",\"kind\":\"object\",\"type\":\"Category\",\"relationName\":\"BookToCategory\"},{\"name\":\"genre\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"year\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"pages\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"rating\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"synopsis\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"cover\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"isbn\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null},\"Category\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdat\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedat\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"books\",\"kind\":\"object\",\"type\":\"Book\",\"relationName\":\"BookToCategory\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

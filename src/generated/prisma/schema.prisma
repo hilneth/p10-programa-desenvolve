@@ -33,11 +33,21 @@ model Book {
   updatedat   DateTime @updatedAt // created at (required)
 
   // Optional Fields
-  genre    String? // literary genre
-  year     Int? // year of publication
-  pages    Int? // total pages
-  rating   Int?    @default(0) // 1-5 star rating (defaulting to 0 if not rated)
-  synopsis String? // synopsis/description (using @db.Text for potentially long strings)
-  cover    String? // cover URL
-  isbn     String? // ISBN
+  categoryid Int?
+  category   Category? @relation(fields: [categoryid], references: [id])
+  genre      String? // literary genre
+  year       Int? // year of publication
+  pages      Int? // total pages
+  rating     Int?      @default(0) // 1-5 star rating (defaulting to 0 if not rated)
+  synopsis   String? // synopsis/description (using @db.Text for potentially long strings)
+  cover      String? // cover URL
+  isbn       String? // ISBN
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdat DateTime @default(now())
+  updatedat DateTime @updatedAt
+  books     Book[]
 }
