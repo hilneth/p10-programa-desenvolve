@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./books.db"
+}
+
+enum Status {
+  QUERO_LER
+  LENDO
+  LIDO
+  PAUSADO
+  ABANDONADO
+}
+
+model Book {
+  // Required Fields
+  id          String   @id @default(uuid()) // Unique identifier (UUID is a good default for strings)
+  title       String // book title (required)
+  author      String // book author (required)
+  status      Status   @default(QUERO_LER) // status (required)
+  currentpage Int      @default(0) // current page (required)
+  createdat   DateTime @default(now()) // created at (required)
+  updatedat   DateTime @updatedAt // created at (required)
+
+  // Optional Fields
+  categoryid Int?
+  category   Category? @relation(fields: [categoryid], references: [id])
+  genre      String? // literary genre
+  year       Int? // year of publication
+  pages      Int? // total pages
+  rating     Int?      @default(0) // 1-5 star rating (defaulting to 0 if not rated)
+  synopsis   String? // synopsis/description (using @db.Text for potentially long strings)
+  cover      String? // cover URL
+  isbn       String? // ISBN
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdat DateTime @default(now())
+  updatedat DateTime @updatedAt
+  books     Book[]
+}
