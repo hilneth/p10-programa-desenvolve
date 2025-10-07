@@ -10,8 +10,9 @@ interface Params {
   params: { id: string };
 }
 
-export default function BookDetailsPage({ params }: Params) {
-  const book = livros.find((b) => b.id === params.id);
+export default async function BookDetailsPage({ params }: Params) {
+  const parameters = await params
+  const book = livros.find((b) => b.id === parameters.id);
 
 
   if (!book) {
