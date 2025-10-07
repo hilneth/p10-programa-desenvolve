@@ -1,7 +1,10 @@
-
-import { livros } from "@/src/utils/book";
+"use client"
 import { ChevronLeft, Edit2Icon, Star, Trash2Icon } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { organizarLista } from "@/src/lib/organizarLista";
+import { Book } from "@/src/types/TLivro"
+import React from "react";
 
 
 
@@ -10,19 +13,44 @@ interface Params {
   params: { id: string };
 }
 
-export default async function BookDetailsPage({ params }: Params) {
-  const parameters = await params
-  const book = livros.find((b) => b.id === parameters.id);
+export default function BookDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+  const parameters = React.use(params)
 
+  const [book, setBook] = useState<Book>({
+    id: null,
+    createdat: '',
+    updatedat: new Date(),
+    title: '',
+    author: '',
+    genre: '',
+    rating: 0,
+    status: 'unread',
+    cover: "/images/meme.jpg",
+    synopsis: '',
+    currentpage: 0,
+    categoryid: undefined,
+    year: undefined,
+    pages: undefined,
+    isbn: '',
+    formatCreatedAt: "",
+    formatUpdatedAt: ""
+  });
+  const [search, setSearch] = useState("");
+  useEffect(() => {
+    async function fetchBook() {
+      try {
+        const res = await fetch("/api/livro/" + parameters.id);
+        if (!res.ok) throw new Error("Falha ao coletar livro");
+        const data = await res.json();
+        setBook(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchBook();
+  }, []);
 
-  if (!book) {
-    return "Livro não encontrado"
-  }
-
-  const getYearFromBrazilianDate = (dateStr: string) => {
-    const parts = dateStr.split("/");
-    return parts[2];
-  };
+  organizarLista(book)
 
   return (
     <section className="w-[90%] xl:w-[1080px] gap-3 items-center flex flex-col md:flex-row justify-around xl:justify-between">
@@ -37,7 +65,7 @@ export default async function BookDetailsPage({ params }: Params) {
           width={200}
           height={300}
           alt={`Capa do livro ${book.title}`}
-          src={book.imageBook}
+          src={book.cover}
         />
 
         <div className="flex gap-4 md:gap-8">
@@ -70,7 +98,7 @@ export default async function BookDetailsPage({ params }: Params) {
           <div className="flex justify-between gap-4 w-full">
             <div className="flex flex-col">
               <span className="font-medium text-gray-600">Início</span>
-              <span className="font-semibold text-black">{book.date}</span>
+              <span className="font-semibold text-black">{book.formatCreatedAt}</span>
             </div>
 
             <div className="w-[150px]">
@@ -102,7 +130,7 @@ export default async function BookDetailsPage({ params }: Params) {
             <div className="flex flex-col">
               <span className="font-medium text-gray-600">Autor</span>
               <span className="font-semibold text-black">
-                {book.authorName}
+                {book.author}
               </span>
             </div>
 
@@ -112,7 +140,7 @@ export default async function BookDetailsPage({ params }: Params) {
                   Ano de publicação
                 </span>
                 <span className="font-semibold text-black">
-                  {getYearFromBrazilianDate(book.date)}
+                  {(book.formatCreatedAt)}
                 </span>
               </div>
             </div>
@@ -120,7 +148,7 @@ export default async function BookDetailsPage({ params }: Params) {
 
           <div className="flex flex-col gap-1">
             <p>Sinopse</p>
-            <p className="font-semibold">{book.sinopse}</p>
+            <p className="font-semibold">{book.synopsis}</p>
           </div>
         </div>
       </div>

@@ -11,7 +11,7 @@ export async function GET(req:NextRequest) {
   const year = searchParams.get("year")
   const status = searchParams.get("status")
   
-  console.log(genre, title, author, rating, year, req.url)
+  // console.log(genre, title, author, rating, year, req.url)
   const books = await prisma.book.findMany({
     where: {
       AND:[

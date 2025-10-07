@@ -16,13 +16,16 @@ export default function Dashboard() {
         <BookCard
           id="1"
           title="Título do Livro"
-          date="16/09/2025"
+          formatCreatedAt="16/09/2025"
           genre="Ação"
           rating={2.5}
           status="A iniciar"
-          imageBook="/images/meme.jpg"
-          authorName="Nome do Autor"
-          sinopse="Sinopse"
+          cover="/images/meme.jpg"
+          author="Nome do Autor"
+          synopsis="Sinopse"
+          createdat=""
+          updatedat= {new Date()}
+          currentpage={0}
         />
       </div>
       <div className="hidden lg:flex">

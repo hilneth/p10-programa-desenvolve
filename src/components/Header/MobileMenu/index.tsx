@@ -21,7 +21,7 @@ export default function MobileMenu() {
         <div className="absolute top-20 right-10 bg-white shadow-lg rounded-xl flex flex-col items-start p-4 space-y-3 md:hidden z-50">
           <Link href={"/"}>Início</Link>
           <Link href={"/livros"}>Livros</Link>
-          <Link href={""}>Perfil</Link>
+          <Link href={"/addlivro"}>Adicionar</Link>
         </div>
       )}
     </>

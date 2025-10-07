@@ -1,40 +1,15 @@
 import Image from "next/image";
 import { Edit2Icon, Star, Trash2Icon } from "lucide-react";
+import { Book } from "../types/TLivro";
 
-/**
- * Props
- * - cover (React node or string URL) optional
- * - title (string)
- * - startDate (string, e.g., "16/09/2025")
- * - genre (string)
- * - rating (number, 0-5)
- * - status (string)
- * - onDelete (fn)
- * - onEdit (fn)
- * - StarIcon, TrashIcon, EditIcon (React components for your SVGs)
- */
 
-export interface IBookCard {
-  id: string;
-  imageBook: string;
-  title: string;
-  date: string;
-  genre: string;
-  rating: number;
-  status: string;
-  authorName: string;
-  sinopse: string;
-  // onDelete: () => void;
-  // onEdit: () => void;
-}
-
-export default function BookCard({ imageBook, title, date, genre, rating, status }: IBookCard) {
+export default function BookCard({ cover, title, formatCreatedAt, genre, rating, status }: Book) {
 
 
   return (
     <article className="w-[350px] h-48 flex gap-4 p-4 rounded-lg shadow-sm border border-gray-200">
       <Image
-        src={ imageBook ? imageBook : "/images/meme.jpg"}
+        src={ cover ? cover : "/images/meme.jpg"}
         width={116}
         height={112}
         alt="Meme"
@@ -47,7 +22,7 @@ export default function BookCard({ imageBook, title, date, genre, rating, status
           <div className="w-42 flex justify-between gap-4">
             <div className="w-24 flex flex-col">
               <span className="font-medium text-gray-600">Início</span>
-              <span className="font-semibold text-black">{date}</span>
+              <span className="font-semibold text-black">{formatCreatedAt}</span>
             </div>
             <div className="flex flex-col">
               <span className="font-medium">Gênero</span>

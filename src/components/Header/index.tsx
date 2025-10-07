@@ -24,6 +24,7 @@ export default function Header() {
       <nav className="hidden md:flex w-[240px] items-center justify-evenly">
         <Link href={"/"}>Início</Link>
         <Link href={"/livros"}>Livros</Link>
+        <Link href={"/addlivro"}>Adicionar Livro</Link>
       </nav>
 
       <Link
