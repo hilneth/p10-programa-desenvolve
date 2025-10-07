@@ -11,7 +11,7 @@ export default function Header() {
 
   
   return (
-    <header className="w-[90%] xl:w-[1108px] h-[80px] rounded-full flex items-center justify-between px-6 bg-white">
+    <header className="w-[90%] xl:w-[1108px] h-[80px] rounded-full flex items-center justify-between px-6 bg-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1),_0_-2px_4px_-1px_rgba(0,0,0,0.06)]">
 
       <Image
         className="md:h-7 w-32 md:w-40"
