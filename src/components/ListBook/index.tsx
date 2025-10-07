@@ -28,8 +28,33 @@ export default function ListBook() {
     return book.title.toLowerCase().includes(search.toLowerCase())
   });
 
+    async function handleDelete(id: string) {
+
+    if (!confirm(`Certeza que deseja deletar livro"?`)) return
+    try {
+      const res = await fetch(`/api/livro/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Erro ao excluir");
+    async function fetchLatestBook() {
+      try {
+        const res = await fetch("/api/livro/latest");
+        if (!res.ok) throw new Error("Failed to fetch book");
+        const data = await res.json();
+        organizarLista(data)
+        setBooks(data);
+      } catch (error) {
+        console.error(error);
+        
+      }
+    }
+      await fetchLatestBook();
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao excluir livro");
+    }
+  }
+
   return (
-    <div className="flex flex-col gap-3 w-[430px] min-h-[544px] rounded-[30px]">
+    <div className="flex flex-col gap-3 w-[430px] max-w-[1108px] min-h-[544px] rounded-[30px]">
       <form className="w-[430px] flex gap-3">
         <button className="bg-white flex items-center justify-center  w-[50px] h-[50px] rounded-full">
           <FilterIcon />
@@ -48,8 +73,7 @@ export default function ListBook() {
       <div className="bg-white min-h-[450px] max-h-[640px] flex flex-col gap-2 overflow-auto rounded-[30px] p-5">
         {filteredBooks.length > 0 ? (
           filteredBooks.map((book:Book) => (
-            <Link href={`/livros/${book.id}`} key={book.id}>
-              <BookCard
+              <BookCard key={book.id}
                 id={book.id}
                 title={book.title}
                 formatCreatedAt={book.formatCreatedAt || book.createdat}
@@ -62,8 +86,8 @@ export default function ListBook() {
                 createdat=""
                 updatedat= {new Date()}
                 currentpage={0}
+                onDelete={handleDelete}
               />
-            </Link>
           ))
         ) : (
           <p className="text-center text-zinc-500">No books found.</p>

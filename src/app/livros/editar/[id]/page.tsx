@@ -1,9 +1,19 @@
-'use client'
+"use client"
+import { ChevronLeft, Edit2Icon, Star, Trash2Icon } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { organizarLista } from "@/src/lib/organizarLista";
+import { Book } from "@/src/types/TLivro"
+import React from "react";
+import Link from "next/link";
 
-import { useState } from 'react'
-import { Book } from '../types/TLivro'
+interface Params {
+  params: { id: string };
+}
 
-export default function NewBookPage() {
+export default function EditBookPage({ params } : { params: Promise<{ id: string }> }) {
+  const parameters = React.use(params)
+
   const [book, setBook] = useState<Book>({
     id: "",
     createdat: '',
@@ -13,7 +23,7 @@ export default function NewBookPage() {
     genre: '',
     rating: 0,
     status: 'unread',
-    cover: '',
+    cover: "/images/meme.jpg",
     synopsis: '',
     currentpage: 0,
     categoryid: undefined,
@@ -22,7 +32,22 @@ export default function NewBookPage() {
     isbn: '',
     formatCreatedAt: "",
     formatUpdatedAt: ""
-  })
+  });
+  const [search, setSearch] = useState("");
+  useEffect(() => {
+    async function fetchBook() {
+      try {
+        const res = await fetch("/api/livro/" + parameters.id);
+        if (!res.ok) throw new Error("Falha ao coletar livro");
+        const data = await res.json();
+        setBook(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchBook();
+  }, []);
+  
 
   const [message, setMessage] = useState('')
 
@@ -46,15 +71,15 @@ export default function NewBookPage() {
     e.preventDefault()
     setMessage('Salvando...')
 
-    const res = await fetch('/api/livro', {
-      method: 'POST',
+    const res = await fetch('/api/livro/' + parameters.id, {
+      method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(book),
     })
 
     if (res.ok) {
       const newBook = await res.json()
-      setMessage(`Livro "${newBook.title}" criado com sucesso`)
+      setMessage(`Livro "${newBook.title}" atualizado com sucesso`)
       setBook({
         id: "",
         createdat: '',
@@ -75,13 +100,13 @@ export default function NewBookPage() {
         formatUpdatedAt: ""
       })
     } else {
-      setMessage('Falha ao criar livro.')
+      setMessage('Falha ao atualizar o livro.')
     }
   }
 
   return (
     <div className="max-w-2xl mx-auto p-6 mb-[80px] bg-white rounded-[20px] shadow">
-      <h1 className="text-2xl font-bold mb-4">Adicionar Novo Livro</h1>
+      <h1 className="text-2xl font-bold mb-4">Editar livro {book.title}</h1>
       {message && <p className="mt-4 text-gray-700">{message}</p>}
       <form onSubmit={handleSubmit} className="space-y-3">
         <input

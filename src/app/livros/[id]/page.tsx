@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { organizarLista } from "@/src/lib/organizarLista";
 import { Book } from "@/src/types/TLivro"
 import React from "react";
+import Link from "next/link";
 
 
 
@@ -17,7 +18,7 @@ export default function BookDetailsPage({ params }: { params: Promise<{ id: stri
   const parameters = React.use(params)
 
   const [book, setBook] = useState<Book>({
-    id: null,
+    id: "",
     createdat: '',
     updatedat: new Date(),
     title: '',
@@ -53,11 +54,11 @@ export default function BookDetailsPage({ params }: { params: Promise<{ id: stri
   organizarLista(book)
 
   return (
-    <section className="w-[90%] xl:w-[1080px] gap-3 items-center flex flex-col md:flex-row justify-around xl:justify-between">
+    <section className="w-[90%] xl:w-[1080px] gap-3 items-center flex flex-col md:flex-row justify-around xl:justify-between bg-white rounded-[40px] p-6">
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-2">
-          <ChevronLeft />
-          <h3>Detalhes do Livro</h3>
+          <Link href="/"><ChevronLeft /></Link>
+          <h3 className="font-bold">Detalhes do Livro</h3>
         </div>
 
         <Image
