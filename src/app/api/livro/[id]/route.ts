@@ -3,9 +3,10 @@ import { Book } from "@/src/generated/prisma"
 import { NextRequest } from "next/server"
 
 
-export async function GET(req:NextRequest, {params}: {params:Book}) {
+export async function GET(req:NextRequest, {params}: {params:Promise<Book>}) {
+  const parameters = await params
   const book = await prisma.book.findUnique({
-    where: { id: params.id },
+    where: { id: parameters.id },
   })
   if (!book) return new Response(JSON.stringify({ error: "Not found" }), { status: 404 })
   return Response.json(book)

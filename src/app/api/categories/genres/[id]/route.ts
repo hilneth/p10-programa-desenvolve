@@ -3,7 +3,7 @@ import { NextRequest } from "next/server"
 
 
 export async function DELETE(req:NextRequest, {params}:{params:Promise<string>}) {
-  const { id } = await params
+  const id = await params
   try{
     const category = await prisma.category.delete({
         where: { 
